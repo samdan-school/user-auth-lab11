@@ -4,6 +4,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const {ObjectID} = require('mongodb');
 const _ = require('lodash');
+const cors = require('cors')
 
 const {mongoose} = require('./db/mongoose');
 const {Todo} = require('./models/todo');
@@ -13,6 +14,7 @@ const {authenticate} = require('./middleware/authenticate');
 let app = express();
 
 app.use(bodyParser.json());
+app.use(cors());
 let port = process.env.PORT;
 
 app.post('/todos', (req, res) => {
