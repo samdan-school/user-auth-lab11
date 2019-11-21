@@ -14,7 +14,10 @@ const {authenticate} = require('./middleware/authenticate');
 let app = express();
 
 app.use(bodyParser.json());
-app.use(cors());
+let corsOptions = {
+    exposedHeaders: ['x-auth']
+}
+app.use(cors(corsOptions));
 let port = process.env.PORT;
 
 app.post('/todos', (req, res) => {
@@ -122,9 +125,7 @@ app.post('/users', (req, res) => {
     let user = User(info);
 
     user.save()
-        .then((user) => {
-            return user.generateAuthToken();
-        })
+      // hereglegchiin medeelleer token generate hiih heseg
         .then((token) => {
             res.header('x-auth', token).send(user);
         })
@@ -135,7 +136,7 @@ app.post('/users', (req, res) => {
 
 
 app.get('/users/me', authenticate, (req, res) => {
-    res.send(req.user);
+    // huselt yvuulah hesgiig nuhuj bichne uu
 });
 
 app.post('/users/login', (req, res) => {
