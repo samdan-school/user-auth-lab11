@@ -18,11 +18,8 @@ import Logout from "./component/Logout";
 */
 
 const PrivateRoute = ({ component, ...options }) => {
-  const { user } = false;
-  // localStorage.getItem(
-  //   // localstorage der hadgalsan neree bichij ugnu
-  // );
-  const finalComponent = user ? component : Register;
+  const token = localStorage.getItem('token');
+  const finalComponent = token ? component : Register;
 
   return <Route {...options} component={finalComponent} />;
 };

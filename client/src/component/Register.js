@@ -1,13 +1,43 @@
-import React from "react";
+import React, { useState } from "react";
 import { Form, Button } from "react-bootstrap";
+import { signup } from "../service/main";
 
-const Register = () => {
+const Register = ({history}) => {
+  const [body, setState] = useState({
+    email: "",
+    password: ""
+  });
+  const handleChange = (event) => {
+    setState({ ...body, email: event.target.value.trim() });
+  }
+  const handleChange2 = event => {
+    setState({ ...body, password: event.target.value.trim() });
+  };
+  const handleOk = function(res) {
+    console.log(res)
+    const token = res.headers['x-auth'];
+    if (token == null) {
+      return;
+    }
+
+    localStorage.setItem("token", token);
+    history.push('/home')      
+  }
+  const handleErr = function(err) {
+      // nsole.log(err);
+  }
+  const handleForm = event => {
+    event.preventDefault();
+    console.log(body);
+    signup(body, handleOk, handleErr)
+  };
+
   return (
-    <Form>
+    <Form onSubmit={handleForm}>
       <h1>Register</h1>
       <Form.Group controlId="formBasicEmail">
         <Form.Label>Email address</Form.Label>
-        <Form.Control type="email" placeholder="Enter email" />
+        <Form.Control name="email" type="email" placeholder="Enter email" onChange={handleChange}/>
         <Form.Text className="text-muted">
           We'll never share your email with anyone else.
         </Form.Text>
@@ -15,7 +45,7 @@ const Register = () => {
 
       <Form.Group controlId="formBasicPassword">
         <Form.Label>Password</Form.Label>
-        <Form.Control type="password" placeholder="Password" />
+        <Form.Control name="pass" type="password" placeholder="Password" onChange={handleChange2}/>
       </Form.Group>
       <Button variant="primary" type="submit">
         Submit
